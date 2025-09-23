@@ -1,0 +1,6 @@
+# 双均线策略所需依赖包
+pandas
+tushare
+flask
+datetime
+flask-cors

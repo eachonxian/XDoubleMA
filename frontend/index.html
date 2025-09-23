@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双均线策略系统</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            text-align: center;
+            max-width: 800px;
+        }
+        h1 {
+            margin-bottom: 30px;
+            color: #4CAF50;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        p {
+            margin-top: 30px;
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>双均线交易策略系统</h1>
+        <a href="strategy.html" class="btn">进入策略分析</a>
+        <p>
+            本系统使用双均线策略分析ETF交易信号，支持自定义均线周期和日期范围，提供回测结果和交易信号分析。<br>
+            请确保后端服务已启动，并在端口5000上运行。
+        </p>
+    </div>
+</body>
+</html>

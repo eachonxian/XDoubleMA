@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双均线交易策略</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/strategy_style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>双均线交易策略分析</h1>
+        </header>
+        
+        <main>
+            <section class="strategy-form">
+                <h2>策略参数设置</h2>
+                <form id="strategyForm">
+                    <div class="form-group">
+                        <label for="etfSelect">ETF选择</label>
+                        <select id="etfSelect" required>
+                            <option value="">-- 请选择ETF --</option>
+                            <!-- ETF选项将通过JavaScript动态加载 -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="startDate">开始日期</label>
+                            <input type="date" id="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">结束日期</label>
+                            <input type="date" id="endDate" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="shortPeriod">短周期均线</label>
+                            <input type="number" id="shortPeriod" min="1" max="100" value="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="longPeriod">长周期均线</label>
+                            <input type="number" id="longPeriod" min="5" max="250" value="21" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">计算策略</button>
+                        <button type="reset" class="btn-secondary">重置</button>
+                    </div>
+                </form>
+            </section>
+            
+            <div class="loading-container" id="loadingContainer">
+                <div class="loading-spinner"></div>
+                <p>正在计算策略，请稍候...</p>
+            </div>
+            
+            <section class="results-container" id="resultsContainer">
+                <div class="backtest-results">
+                    <h2>回测结果</h2>
+                    <div class="result-cards">
+                        <div class="result-card">
+                            <h3>总收益率</h3>
+                            <p id="totalReturn">0.00%</p>
+                        </div>
+                        <div class="result-card">
+                            <h3>年化收益率</h3>
+                            <p id="annualReturn">0.00%</p>
+                        </div>
+                        <div class="result-card">
+                            <h3>最大回撤</h3>
+                            <p id="maxDrawdown">0.00%</p>
+                        </div>
+                        <div class="result-card">
+                            <h3>胜率</h3>
+                            <p id="winRate">0.00%</p>
+                        </div>
+                        <div class="result-card">
+                            <h3>交易次数</h3>
+                            <p id="trades">0</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <h2>价格走势与买卖点</h2>
+                    <div id="priceChart" class="price-chart"></div>
+                </div>
+                
+                <div class="signals-results">
+                    <h2>交易信号</h2>
+                    <div class="signals-table-container">
+                        <table id="signalsTable">
+                            <thead>
+                                <tr>
+                                    <th>日期</th>
+                                    <th>价格</th>
+                                    <th>信号类型</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 信号数据将通过JavaScript动态加载 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>© 2025 双均线交易策略分析系统</p>
+        </footer>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="js/strategy.js"></script>
+</body>
+</html>
