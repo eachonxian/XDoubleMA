@@ -146,23 +146,6 @@ doub/
 
 MIT License - 详见 [LICENSE](LICENSE) 文件
 
-## 🤝 贡献
-
-欢迎提交Issue和Pull Request！
-
-1. Fork 项目
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 打开Pull Request
-
-## 📞 联系方式
-
-如有问题或建议，请通过以下方式联系：
-
-- 📧 Email: your-email@example.com
-- 🐛 Issues: [GitHub Issues](https://github.com/your-username/doub/issues)
-
 ---
 
 ⭐ 如果这个项目对你有帮助，请给个Star支持一下！
