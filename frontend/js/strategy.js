@@ -359,6 +359,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     symbol: 'none'
                 },
                 {
+                    name: '吊灯止损线',
+                    type: 'line',
+                    data: chartData.chandelier_stop,
+                    smooth: true,
+                    lineStyle: {
+                        width: 2,
+                        color: '#9C27B0',
+                        type: 'dashed'
+                    },
+                    symbol: 'none'
+                },
+                {
                     name: '买入点',
                     type: 'scatter',
                     data: buyPoints,
