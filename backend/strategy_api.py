@@ -12,7 +12,7 @@ import os
 
 # 尝试从环境变量获取token，如果没有则使用默认测试token
 # 注意：测试token有调用限制，建议用户设置自己的token
-ts_token = os.environ.get('TUSHARE_TOKEN', 'YOUR_TUSHARE_TOKEN')
+ts_token = os.environ.get('TUSHARE_TOKEN', '5f9b180a67e2c7f86be938ba7df4b31861eace80c857c4b7b3440c88')
 ts.set_token(ts_token)
 pro = ts.pro_api()
 
@@ -98,6 +98,52 @@ def get_stock_data(ts_code, start_date, end_date):
         print(f"获取股票数据出错: {e}")
         return pd.DataFrame()
 
+# 计算ATR（平均真实波动幅度）
+def calculate_atr(df, period=21):
+    """
+    计算ATR（平均真实波动幅度）
+    ATR = 平均真实范围，用于衡量价格波动性
+    """
+    if df.empty or len(df) < period:
+        return df
+    
+    # 复制数据避免修改原始数据
+    data = df.copy()
+    
+    # 计算真实范围TR
+    data['high_low'] = data['high'] - data['low']
+    data['high_close'] = abs(data['high'] - data['close'].shift(1))
+    data['low_close'] = abs(data['low'] - data['close'].shift(1))
+    
+    # TR是三者中的最大值
+    data['tr'] = data[['high_low', 'high_close', 'low_close']].max(axis=1)
+    
+    # ATR是TR的移动平均
+    data['atr'] = data['tr'].rolling(window=period).mean()
+    
+    return data
+
+# 计算吊灯止损线
+def calculate_chandelier_stop(df, period=21, multiplier=3):
+    """
+    计算吊灯止损价格
+    吊灯止损点（上升趋势）= period日高点 - ATR(period) x multiplier
+    """
+    if df.empty or len(df) < period:
+        return df
+    
+    # 确保已计算ATR
+    if 'atr' not in df.columns:
+        df = calculate_atr(df, period)
+    
+    # 计算period日高点
+    df[f'highest_{period}'] = df['high'].rolling(window=period).max()
+    
+    # 计算吊灯止损价格
+    df['chandelier_stop'] = df[f'highest_{period}'] - (df['atr'] * multiplier)
+    
+    return df
+
 # 计算双均线策略
 def calculate_dual_ma_strategy(df, short_period, long_period):
     if df.empty:
@@ -109,6 +155,10 @@ def calculate_dual_ma_strategy(df, short_period, long_period):
     # 计算短期和长期移动平均线
     result[f'ma_{short_period}'] = result['close'].rolling(window=short_period).mean()
     result[f'ma_{long_period}'] = result['close'].rolling(window=long_period).mean()
+    
+    # 计算ATR和吊灯止损线
+    result = calculate_atr(result, period=21)
+    result = calculate_chandelier_stop(result, period=21, multiplier=3)
     
     # 生成买入信号：短期均线上穿长期均线
     result['signal'] = 0
@@ -261,6 +311,14 @@ def prepare_chart_data(df, short_period, long_period):
     valid_ma_start = max(short_period, long_period) - 1
     valid_df = df.iloc[valid_ma_start:].copy()
     
+    # 提取吊灯止损线数据
+    chandelier_stop = []
+    for _, row in valid_df.iterrows():
+        if pd.notna(row['chandelier_stop']):
+            chandelier_stop.append(round(row['chandelier_stop'], 2))
+        else:
+            chandelier_stop.append(None)
+    
     # 提取图表所需数据
     chart_data = {
         'dates': valid_df['trade_date'].tolist(),
@@ -272,6 +330,7 @@ def prepare_chart_data(df, short_period, long_period):
         },
         'ma_short': valid_df[f'ma_{short_period}'].round(2).tolist(),
         'ma_long': valid_df[f'ma_{long_period}'].round(2).tolist(),
+        'chandelier_stop': chandelier_stop,
         'volume': valid_df['vol'].tolist() if 'vol' in df.columns else []
     }
     
