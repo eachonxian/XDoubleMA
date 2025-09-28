@@ -13,7 +13,7 @@
 
 ## 🌐 项目演示
 
-![项目演示](https://xxbb.work/dma/)
+打开浏览器访问: https://xxbb.work/dma/
 
 ## 🚀 快速开始
 
